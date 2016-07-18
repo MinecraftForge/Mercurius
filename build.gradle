@@ -1,0 +1,139 @@
+
+// For those who want the bleeding edge
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+    }
+}
+apply plugin: 'com.github.johnrengelman.shadow'
+
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+/*
+// for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
+plugins {
+    id "net.minecraftforge.gradle.forge" version "2.0.2"
+}
+*/
+version = "1.0.0"
+group= "net.minecraftforge.stats" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "ForgeStats-1.10.2"
+
+sourceSets {
+    main {
+        java { srcDirs = ["$projectDir/src/main/java"] }
+        resources { srcDirs = ["$projectDir/src/main/resources"] }
+    }
+}
+
+
+minecraft {
+    version = "1.10.2-12.18.1.2013"
+    runDir = "run"
+
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not allways work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
+    mappings = "snapshot_20160518"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+}
+
+configurations {
+    external
+    compile.extendsFrom external
+}
+
+dependencies {
+    // you may put jars on which you depend on in ./libs
+    // or you may define them like so..
+    //compile "some.group:artifact:version:classifier"
+    //compile "some.group:artifact:version"
+
+    // real examples
+    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
+    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
+    // except that these dependencies get remapped to your current MCP mappings
+    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // for more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    external  'org.apache.httpcomponents:httpclient:4.5.1'
+    external  'org.apache.httpcomponents:httpcore:4.4.3'
+}
+
+jar {
+    from { configurations.external.collect { it.isDirectory() ? it : zipTree(it) } } {
+        exclude "META-INF/*.SF"
+        exclude "META-INF/*.DSA"
+        exclude "META-INF/*.RSA"
+        exclude "META-INF/*.txt"
+        exclude "META-INF/DEPENDENCIES"
+        exclude "META-INF/LICENSE"
+        exclude "META-INF/NOTICE"
+        exclude "dummyThing"
+    }
+}
+
+processResources
+        {
+            // this will ensure that this task is redone when the versions change.
+            inputs.property "version", project.version
+            inputs.property "mcversion", project.minecraft.version
+
+            // replace stuff in mcmod.info, nothing else
+            from(sourceSets.main.resources.srcDirs) {
+                include 'mcmod.info'
+
+                // replace version and mcversion
+                expand 'version':project.version, 'mcversion':project.minecraft.version
+            }
+
+            // copy everything else, thats not the mcmod.info
+            from(sourceSets.main.resources.srcDirs) {
+                exclude 'mcmod.info'
+            }
+        }
+
+shadowJar {
+    relocate 'org.apache.httpcomponents', 'com.tamashenning.org.apache.httpcomponents'
+    relocate 'org.apache.http', 'com.tamashenning.org.apache.http' // org/apache/http/client/HttpClient
+    relocate 'org.apache.commons.logging', 'com.tamashenning.org.commons.logging' //org/apache/commons/logging/LogFactory
+
+    classifier ''
+}
+
+reobf {
+    shadowJar {}
+}
+
+
+build.dependsOn shadowJar
