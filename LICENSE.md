@@ -1,4 +1,4 @@
-Minecraft Forge is licensed under the terms of the LGPL 2.1 found
+Mercurius is licensed under the terms of the LGPL 2.1 found
 here http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt and copied
 below.
 

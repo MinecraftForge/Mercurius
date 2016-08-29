@@ -2,7 +2,7 @@
   "modListVersion": 2,
   "modList": [{
     "modid": "mercurius",
-    "name": "Forge Mercurius",
+    "name": "Mercurius",
     "description": "Basic analytics mod sending data for Forge. All sent data can be viewed under the config section and individually opted out. To fully disable remove the mod or disable snooper.",
     "version": "1.0.0",
     "mcversion": "1.10.2",
