@@ -1,11 +1,11 @@
-package net.minecraftforge.stats.proxies;
+package net.minecraftforge.mercurius.proxies;
 
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.stats.helpers.StatsConstants;
-import net.minecraftforge.stats.helpers.DataHelper;
+import net.minecraftforge.mercurius.helpers.StatsConstants;
+import net.minecraftforge.mercurius.helpers.DataHelper;
 
 import java.io.File;
 

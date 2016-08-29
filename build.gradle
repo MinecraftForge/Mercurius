@@ -36,8 +36,8 @@ plugins {
 }
 */
 version = "1.0.0"
-group= "net.minecraftforge.stats" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "ForgeStats-1.10.2"
+group= "net.minecraftforge.mercurius" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "Mercurius-1.10.2"
 
 sourceSets {
     main {
@@ -48,7 +48,7 @@ sourceSets {
 
 
 minecraft {
-    version = "1.10.2-12.18.1.2013"
+    version = "1.10.2-12.18.1.2075"
     runDir = "run"
 
     // the mappings can be changed at any time, and must be in the following format.

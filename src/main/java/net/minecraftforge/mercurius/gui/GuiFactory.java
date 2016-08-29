@@ -1,4 +1,4 @@
-package net.minecraftforge.stats.gui;
+package net.minecraftforge.mercurius.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;

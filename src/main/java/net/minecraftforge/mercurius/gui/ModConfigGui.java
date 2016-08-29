@@ -1,4 +1,4 @@
-package net.minecraftforge.stats.gui;
+package net.minecraftforge.mercurius.gui;
 
 import java.util.List;
 
@@ -8,10 +8,10 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
-import net.minecraftforge.stats.StatsMod;
-import net.minecraftforge.stats.dataModels.StatsStartModel;
-import net.minecraftforge.stats.helpers.StatsConstants;
-import net.minecraftforge.stats.utils.Commands;
+import net.minecraftforge.mercurius.StatsMod;
+import net.minecraftforge.mercurius.dataModels.StatsStartModel;
+import net.minecraftforge.mercurius.helpers.StatsConstants;
+import net.minecraftforge.mercurius.utils.Commands;
 
 public class ModConfigGui extends GuiConfig {
 

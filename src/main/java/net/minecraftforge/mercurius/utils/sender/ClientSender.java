@@ -1,4 +1,4 @@
-package net.minecraftforge.stats.utils.sender;
+package net.minecraftforge.mercurius.utils.sender;
 
 import net.minecraft.client.Minecraft;
 

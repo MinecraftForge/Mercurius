@@ -1,7 +1,6 @@
-package net.minecraftforge.stats.utils;
+package net.minecraftforge.mercurius.utils;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 

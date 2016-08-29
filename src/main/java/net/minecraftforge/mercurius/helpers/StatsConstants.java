@@ -1,16 +1,13 @@
-package net.minecraftforge.stats.helpers;
+package net.minecraftforge.mercurius.helpers;
 
 import net.minecraftforge.common.config.Configuration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by tamas on 7/15/16.
  */
 public class StatsConstants {
 
-    public static String forgeServerUrl = "http://stats.minecraftforge.net/api/stats/";
+    public static String forgeServerUrl = "http://mercurius.minecraftforge.net/api/mercurius/";
 
     public static String InstallID = "";
     public static String SessionID = "";

@@ -1,4 +1,4 @@
-package net.minecraftforge.stats.utils;
+package net.minecraftforge.mercurius.utils;
 
 /**
  * Created by tamas on 7/15/16.

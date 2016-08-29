@@ -1,6 +1,6 @@
-package net.minecraftforge.stats.dataModels;
+package net.minecraftforge.mercurius.dataModels;
 
-import net.minecraftforge.stats.utils.GameEnvironment;
+import net.minecraftforge.mercurius.utils.GameEnvironment;
 
 /**
  * Created by tamas on 7/15/16.

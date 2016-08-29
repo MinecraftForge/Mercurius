@@ -1,6 +1,6 @@
-package net.minecraftforge.stats.dataModels;
+package net.minecraftforge.mercurius.dataModels;
 
-import net.minecraftforge.stats.utils.Commands;
+import net.minecraftforge.mercurius.utils.Commands;
 
 import java.util.Hashtable;
 

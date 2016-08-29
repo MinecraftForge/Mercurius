@@ -1,8 +1,8 @@
-package net.minecraftforge.stats.proxies;
+package net.minecraftforge.mercurius.proxies;
 
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.stats.StatsMod;
-import net.minecraftforge.stats.utils.Commands;
+import net.minecraftforge.mercurius.StatsMod;
+import net.minecraftforge.mercurius.utils.Commands;
 
 /**
  * Created by tamas on 7/15/16.

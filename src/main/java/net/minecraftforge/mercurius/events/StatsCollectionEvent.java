@@ -1,13 +1,9 @@
-package net.minecraftforge.stats.events;
+package net.minecraftforge.mercurius.events;
 
 import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.stats.utils.Commands;
-import net.minecraftforge.stats.utils.GameEnvironment;
+import net.minecraftforge.mercurius.utils.Commands;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.Hashtable;
-import java.util.List;
 
 /**
  * Created by tamas on 7/15/16.

@@ -1,7 +1,7 @@
-package net.minecraftforge.stats.utils;
+package net.minecraftforge.mercurius.utils;
 
-import net.minecraftforge.stats.StatsMod;
-import net.minecraftforge.stats.helpers.StatsConstants;
+import net.minecraftforge.mercurius.StatsMod;
+import net.minecraftforge.mercurius.helpers.StatsConstants;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

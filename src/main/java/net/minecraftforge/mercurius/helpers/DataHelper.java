@@ -1,4 +1,4 @@
-package net.minecraftforge.stats.helpers;
+package net.minecraftforge.mercurius.helpers;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
