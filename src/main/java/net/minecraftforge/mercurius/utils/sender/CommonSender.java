@@ -1,6 +1,7 @@
 package net.minecraftforge.mercurius.utils.sender;
 
 import com.google.gson.Gson;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
@@ -13,14 +14,15 @@ import net.minecraftforge.mercurius.helpers.StatsConstants;
 import net.minecraftforge.mercurius.utils.Commands;
 import net.minecraftforge.mercurius.utils.GameEnvironment;
 import net.minecraftforge.mercurius.utils.LogHelper;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -96,28 +98,52 @@ public abstract class CommonSender {
     public void Upload(final String json) throws Exception {
         Thread newThread = new Thread() {
             public void run() {
-                HttpClient httpClient = HttpClientBuilder.create().build();
-
-                try {
-                    HttpPost request = new HttpPost(StatsConstants.forgeServerUrl);
-
-                    List<NameValuePair> nvp = new ArrayList<NameValuePair>();
-                    nvp.add(new BasicNameValuePair("stat", json));
-
-                    request.setEntity(new UrlEncodedFormEntity(nvp));
-                    HttpResponse response = httpClient.execute(request);
-                    LogHelper.info(response.toString());
-
-
-                } catch (Exception ex) {
-                    // handle exception here
-                    ex.printStackTrace();
-                }
+                String ret = CommonSender.post(json);
+                LogHelper.info(ret);
             }
         };
         newThread.setName("ForgeStatsThread");
         newThread.start();
 
+    }
+
+    private static String post(String json)
+    {
+        try {
+            String data = "stat=" +  URLEncoder.encode(json, "UTF-8");
+
+            HttpURLConnection conn = (HttpURLConnection)(new URL(StatsConstants.forgeServerUrl)).openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            conn.setRequestProperty("Content-Length", "" + data.getBytes().length);
+            conn.setRequestProperty("Content-Language", "en-US");
+            conn.setUseCaches(false);
+            conn.setDoOutput(true);
+            DataOutputStream out = new DataOutputStream(conn.getOutputStream());
+            out.writeBytes(data);
+            out.flush();
+            out.close();
+            BufferedReader in_ = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuffer ret = new StringBuffer();
+            String line;
+
+            while ((line = in_.readLine()) != null)
+            {
+                ret.append(line);
+                ret.append('\r');
+            }
+
+            in_.close();
+            return ret.toString();
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return e.toString();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return e.toString();
+        }
     }
 
     private static Timer timer = new Timer();
@@ -185,6 +211,7 @@ public abstract class CommonSender {
             }
         }
 
+        @SuppressWarnings("unchecked")
         Hashtable<String, Hashtable<String, Object>> cloneMods = (Hashtable<String, Hashtable<String, Object>>)model.Mods.clone();
 
         for(String key : cloneMods.keySet()) {
