@@ -7,7 +7,7 @@ import net.minecraftforge.common.config.Configuration;
  */
 public class StatsConstants {
 
-    public static String forgeServerUrl = "http://stats.minecraftforge.net/api/stats/";
+    public static String forgeServerUrl = "http://stats.minecraftforge.net/api/v2/";
 
     public static String InstallID = "";
     public static String SessionID = "";
