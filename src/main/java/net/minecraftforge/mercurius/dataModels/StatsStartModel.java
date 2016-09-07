@@ -2,22 +2,8 @@ package net.minecraftforge.mercurius.dataModels;
 
 import net.minecraftforge.mercurius.utils.GameEnvironment;
 
-/**
- * Created by tamas on 7/15/16.
- */
-public class StatsStartModel extends StatsPingModel {
-
-    public StatsStartModel() {
-        super();
-    }
-
-    public StatsStartModel(StatsPingModel prevModel) {
-        this.Mods = prevModel.Mods;
-        this.InstallID = prevModel.InstallID;
-        this.SessionID = prevModel.SessionID;
-        this.cmd = prevModel.cmd;
-    }
-
+public class StatsStartModel extends StatsPingModel
+{
     public long ClientDateTimeEpoch;
     public String JavaVersion;
     public long JavaAllocatedRAM;

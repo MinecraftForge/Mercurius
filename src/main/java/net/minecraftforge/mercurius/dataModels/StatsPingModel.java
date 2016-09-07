@@ -2,16 +2,13 @@ package net.minecraftforge.mercurius.dataModels;
 
 import net.minecraftforge.mercurius.utils.Commands;
 
-import java.util.Hashtable;
+import java.util.Map;
 
-/**
- * Created by tamas on 7/18/16.
- */
-public class StatsPingModel {
-
+public class StatsPingModel
+{
     public Commands cmd;
     public String InstallID;
     public String SessionID;
 
-    public Hashtable<String, Hashtable<String, Object>> Mods;
+    public Map<String, Map<String, Object>> Mods;
 }

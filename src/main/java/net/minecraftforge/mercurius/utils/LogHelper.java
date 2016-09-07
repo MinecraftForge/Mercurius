@@ -1,19 +1,21 @@
 package net.minecraftforge.mercurius.utils;
 
-import net.minecraftforge.mercurius.StatsMod;
-import net.minecraftforge.mercurius.helpers.StatsConstants;
+import net.minecraftforge.mercurius.Config;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * Created by tamas on 7/15/16.
- */
 public class LogHelper {
-    private static Logger logger = LogManager.getLogger(StatsMod.MODID);
+    private static Logger logger = null;
+    private static String modID = null;
 
     public static void log(Level logLevel, String message) {
-        logger.log(logLevel, "[" + StatsMod.MODID + "] " + message);
+        if (logger == null)
+        {
+            modID = "mercurius"; //Should never change, but we could ask the binding.
+            logger = LogManager.getLogger(modID);
+        }
+        logger.log(logLevel, "[" + modID + "] " + message);
     }
 
     public static void all(String message) {
@@ -41,7 +43,7 @@ public class LogHelper {
     }
 
     public static void info(String message) {
-        if(StatsConstants.spammyLogs) {
+        if(Config.spammyLogs) {
             log(Level.INFO, message);
         }
     }
