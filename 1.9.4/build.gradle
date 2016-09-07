@@ -1,0 +1,16 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+minecraft {
+    version = "1.9.4-12.17.0.2051"
+    runDir = "run"
+    mappings = "snapshot_20160518"
+}

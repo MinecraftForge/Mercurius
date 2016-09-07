@@ -1,62 +1,133 @@
-
-// For those who want the bleeding edge
-buildscript {
-    repositories {
-        mavenCentral()
-        jcenter()
-        maven {
-            name = "forge"
-            url = "http://files.minecraftforge.net/maven"
-        }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        flatDir {
-            dirs 'libs'
-        }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
-        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
-    }
-}
-apply plugin: 'com.github.johnrengelman.shadow'
-
-apply plugin: 'net.minecraftforge.gradle.forge'
-
-version = "1.10.2-1.0.0"
-group= "net.minecraftforge.mercurius"
-archivesBaseName = "Mercurius"
-
-minecraft {
-    version = "1.10.2-12.18.1.2075"
-    runDir = "run"
-    mappings = "snapshot_20160518"
+subprojects {
+    version = "1.0" //Make warning shut up
 }
 
+//TODO: Have a cross MC version code folder?
+
+evaluationDependsOnChildren() // gotta make sure the children happen first
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+version = "1.0.0"
+allprojects {
+    group = "net.minecraftforge"
+    archivesBaseName = "Mercurius"
+    apply plugin: 'maven'
+}
+
+repositories {
+	mavenCentral()
+}
+    
 dependencies {
+	compile 'com.google.guava:guava:17.0' //Not sure how far back this goes.. need to check each dep for each mc version...
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'org.apache.logging.log4j:log4j-api:2.0-beta9'
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+// easy setups
+task setupDecompWorkspace
+task setupDevWorkspace
+task setupCiWorkspace
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+// configure subprojects
+subprojects {
+    version = minecraft.version // + "-" + rootProject.version //Do we want to apply the version to the file name? 
+                                //Doing it this way allows us to simply reference a single version per mc version 
+                                //in the mc version json and the launcher will auto update it.
+    
+    dependencies {
+        compile rootProject
+    }
+    sourceSets.main.resources.srcDirs += rootProject.sourceSets.main.resources.srcDirs
+
+    jar {
+        from rootProject.sourceSets.main.output
+    }
+    
+    processResources
+    {
+        inputs.property "version", project.version
+        inputs.property "mcversion", project.minecraft.version
+
+        from(sourceSets.main.resources.srcDirs) {
+            include 'mcmod.info'
+            expand 'version':project.version, 'mcversion':project.minecraft.version
+        }
+
+        from(sourceSets.main.resources.srcDirs) {
+            exclude 'mcmod.info'
+        }
+    }
+    
+    uploadArchives {
+        repositories.mavenDeployer {
+
+            dependsOn 'build'
+
+            if (project.hasProperty('forgeMavenPass'))
+            {
+                repository(url: "http://files.minecraftforge.net/maven/manage/upload") {
+                    authentication(userName: "forge", password: project.getProperty('forgeMavenPass'))
+                }
+            }
+            else
+            {
+                repository(url: 'file://localhost/' + rootProject.file('repo').getAbsolutePath())
+            }
+
+            pom {
+                groupId = project.group
+                version = project.version
+                artifactId = project.archivesBaseName
+                project {
+                    name project.archivesBaseName
+                    packaging 'jar'
+                    description 'Mercurius Statistics Gathering Mod'
+                    url 'https://github.com/MinecraftForge/Mercurius'
+
+                    scm {
+                        url 'https://github.com/MinecraftForge/Mercurius'
+                        connection 'scm:git:git://github.com/MinecraftForge/Mercurius.git'
+                        developerConnection 'scm:git:git@github.com:MinecraftForge/Mercurius.git'
+                    }
+
+                    issueManagement {
+                        system 'github'
+                        url 'https://github.com/MinecraftForge/Mercurius/issues'
+                    }
+
+                    licenses {
+                        license {
+                            name 'LGPL v2.1'
+                            url 'https://github.com/MinecraftForge/Mercurius/blob/master/LICENSE.md'
+                            distribution 'repo'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'LexManos'
+                            name 'Lex Manos'
+                            roles { role 'developer' }
+                        }
+                        developer {
+                            id 'TamasHenning'
+                            name 'Tamas Henning'
+                            roles { role 'developer' }
+                        }
+                    }
+                }
+            }
+        }
     }
 
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+    // task deps
+    rootProject.setupDecompWorkspace.dependsOn setupDecompWorkspace
+    rootProject.setupDevWorkspace.dependsOn setupDevWorkspace
+    rootProject.setupCiWorkspace.dependsOn setupCiWorkspace
+    rootProject.build.dependsOn build
+    rootProject.uploadArchives.dependsOn uploadArchives
 }

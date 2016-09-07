@@ -1,18 +1,23 @@
-/*
-!/.gitignore
-!/.gitmodules
-!/src
-!/gradle
-!/gradlew
-!/gradlew.bat
-!/README.md
-!/License.txt
-!/LICENSE
-!/build.gradle
-!/build.properties
-!/build.bat
-!/build.sh
-!/gradle.properties
-!/webresources
-!/Setup.sh
-.DS_Store
+# gradle stuff
+build
+.gradle
+
+# eclipse stuff
+.classpath
+.project
+.settings
+bin
+*.launch
+
+# run place
+run
+
+# intellij stuff
+.idea
+out
+*.iml
+*.iws
+*.ipr
+
+# local repo
+repo
