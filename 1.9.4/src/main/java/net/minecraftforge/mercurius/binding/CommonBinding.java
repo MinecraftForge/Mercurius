@@ -14,6 +14,7 @@ import com.google.common.collect.Maps;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.mercurius.Config;
@@ -33,6 +34,7 @@ abstract class CommonBinding implements IMinecraftBinding
     protected CommonBinding(File cfgDir)
     {
         this.cfgDir = cfgDir;
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -68,6 +70,12 @@ abstract class CommonBinding implements IMinecraftBinding
             mods.put(mod.getModId(), info);
         }
         return mods;
+    }
+
+    public void onConfigChange(ConfigChangedEvent e)
+    {
+    	if (e.getModID().equals(StatsMod.MODID))
+    		loadConfig();
     }
 
     @Override
