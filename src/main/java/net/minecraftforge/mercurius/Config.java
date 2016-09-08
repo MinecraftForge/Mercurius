@@ -8,7 +8,6 @@ import net.minecraftforge.mercurius.helpers.DataHelper;
 
 public class Config
 {
-    public static String sessionID = DataHelper.CreateID();
     public static boolean spammyLogs = false;
     public static OptOuts OptOut = new OptOuts();
 

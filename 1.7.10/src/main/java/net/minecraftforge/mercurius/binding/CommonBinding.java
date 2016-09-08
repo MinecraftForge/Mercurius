@@ -8,6 +8,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.mercurius.*;
+import net.minecraftforge.mercurius.helpers.DataHelper;
 import net.minecraftforge.mercurius.utils.Commands;
 import net.minecraftforge.mercurius.utils.FieldUtils;
 
@@ -25,6 +26,7 @@ abstract class CommonBinding implements IMinecraftBinding
     protected File cfgDir;
     Configuration global = null;
     Configuration local = null;
+    String sessionID = DataHelper.CreateID();
 
     protected CommonBinding(File cfgDir)
     {
@@ -43,6 +45,11 @@ abstract class CommonBinding implements IMinecraftBinding
     {
         String branding = Loader.instance().getFMLBrandingProperties().get("fmlbranding");
         return branding == null ? "Vanilla" : branding;
+    }
+
+    @Override
+    public String getSessionID() {
+        return sessionID;
     }
 
     @Override

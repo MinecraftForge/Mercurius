@@ -11,6 +11,7 @@ public interface IMinecraftBinding
     GameEnvironment getGameEnvironment();
     String getMCVersion();
     String getModPack();
+    String getSessionID();
     Map<String, Map<String, Object>> gatherModData(Commands cmd);
     Map<String, ModInfo> gatherMods();
     void loadConfig();

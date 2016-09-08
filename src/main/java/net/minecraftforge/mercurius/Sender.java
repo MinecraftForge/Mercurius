@@ -48,7 +48,7 @@ public class Sender
 
         StatsPingModel model = cmd.newInstance();
         model.InstallID = GlobalConfig.installID;
-        model.SessionID = Config.sessionID;
+        model.SessionID = Mercurius.getBinding().getSessionID();
         model.Mods = Mercurius.getBinding().gatherModData(cmd);
 
         if (cmd == Commands.START)

@@ -37,6 +37,7 @@ public class ModConfigGui extends GuiConfig
             e.printStackTrace();
         }
 
+        bind.global.get(CATEGORY_GENERAL, "sessionID", bind.getSessionID());
         List<IConfigElement> ret = new ConfigElement(bind.global.getCategory(CATEGORY_GENERAL)).getChildElements();
         ret.addAll(new ConfigElement(bind.local.getCategory(CATEGORY_GENERAL)).listCategoriesFirst(false).getChildElements());
         return ret;
