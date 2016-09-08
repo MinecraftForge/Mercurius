@@ -53,6 +53,10 @@ subprojects {
         from rootProject.sourceSets.main.allSource
     }
     
+    artifacts {
+        archives sourceJar
+    }
+    
     processResources
     {
         inputs.property "version", project.version
