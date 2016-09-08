@@ -52,11 +52,11 @@ subprojects {
     /*sourceJar {
         duplicatesStrategy = 'exclude'
         from rootProject.sourceSets.main.allSource
-    }*/
+    }
     
     artifacts {
         archives sourceJar
-    }
+    }*/
     
     processResources
     {
