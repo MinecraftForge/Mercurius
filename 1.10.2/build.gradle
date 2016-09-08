@@ -16,7 +16,22 @@ minecraft {
     mappings = "snapshot_20160518"
 }
 
-
 dependencies {
     compile project(':1.9.4')
+}
+
+jar.dependsOn ':1.9.4:jar'
+sourceJar.dependsOn ':1.9.4:sourceJar'
+
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(tasks.jar)) {
+        tasks.jar {
+            from zipTree(project(':1.9.4').tasks['jar'].archivePath)
+        }
+    }
+    if (graph.hasTask(tasks.sourceJar)) {
+        tasks.sourceJar {
+            from zipTree(project(':1.9.4').tasks['sourceJar'].archivePath)
+        }
+    }
 }
