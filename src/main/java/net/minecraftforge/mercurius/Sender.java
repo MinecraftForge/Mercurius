@@ -85,7 +85,7 @@ public class Sender
                 LogHelper.info(ret);
             }
         };
-        newThread.setName("ForgeStatsThread");
+        newThread.setName("MercuriusThread");
         newThread.start();
 
     }

@@ -8,8 +8,8 @@ public enum Commands
 {
     START(StatsStartModel.class),
     PING(StatsPingModel.class),
-    STOP(StatsPingModel.class);
-    // CRASH // future use?
+    STOP(StatsPingModel.class),
+    CRASH(StatsPingModel.class); // Future use, once we have all MC versions done.
 
     private Class<? extends StatsPingModel> cls;
     private Commands(Class<? extends StatsPingModel> cls)
@@ -27,6 +27,6 @@ public enum Commands
         } catch (Exception e) {
             Throwables.propagate(e);
         }
-        return null; //Shouldnt happen
+        return null; // Shouldn't happen
     }
 }

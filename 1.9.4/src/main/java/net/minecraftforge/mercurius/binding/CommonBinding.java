@@ -81,7 +81,7 @@ abstract class CommonBinding implements IMinecraftBinding
     @Override
     public void loadConfig()
     {
-        global = createConfig(new File(cfgDir.getParent(), "/local/local_forgestats.cfg"), GlobalConfig.class);
+        global = createConfig(new File(cfgDir.getParent(), "/local/local_mercurius.cfg"), GlobalConfig.class);
         local = createConfig(new File(cfgDir, "/" + StatsMod.MODNAME + ".cfg"), Config.class);
         global.save();
         local.save();
@@ -102,14 +102,16 @@ abstract class CommonBinding implements IMinecraftBinding
         return cfg;
     }
 
+    // TODO: Move to a different spot maybe? A lot of code here.
+
     @SuppressWarnings("unchecked")
 	private void createConfig(String category, Configuration cfg, Class<?> ftype, Field f, Object instance)
     {
         Property prop = null;
-        String comment = null; //TODO Take From Annotation
+        String comment = null; // TODO Take From Annotation
         String langKey = StatsMod.MODID + "." + category + "." + f.getName().toLowerCase(Locale.ENGLISH); //TODO Take From Annotation
-        int min = -1; //TODO Take From Annotation
-        int max = -1; //TODO Take From Annotation
+        int min = -1; // TODO Take From Annotation
+        int max = -1; // TODO Take From Annotation
 
         if (ftype == boolean.class)
         {
@@ -199,7 +201,8 @@ abstract class CommonBinding implements IMinecraftBinding
         	}
             prop = null;
         }
-        else if (ftype.getSuperclass() == Object.class) //Only support classes that are one level below Object. TODO test other stuff
+        // TODO test other stuff
+        else if (ftype.getSuperclass() == Object.class) //Only support classes that are one level below Object.
         {
         	String sub = category + "." + f.getName().toLowerCase(Locale.ENGLISH);
         	Object sinst = FieldUtils.getObject(instance, f);
