@@ -44,7 +44,13 @@ subprojects {
     sourceSets.main.resources.srcDirs += rootProject.sourceSets.main.resources.srcDirs
 
     jar {
+        duplicatesStrategy = 'exclude'
         from rootProject.sourceSets.main.output
+    }
+    
+    sourceJar {
+        duplicatesStrategy = 'exclude'
+        from rootProject.sourceSets.main.allSource
     }
     
     processResources
