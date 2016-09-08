@@ -48,15 +48,14 @@ subprojects {
         from rootProject.sourceSets.main.output
     }
 
-    // Commented this out until Lex finds a fix(???)
-    /*sourceJar {
+    sourceJar {
         duplicatesStrategy = 'exclude'
         from rootProject.sourceSets.main.allSource
     }
     
     artifacts {
         archives sourceJar
-    }*/
+    }
     
     processResources
     {
