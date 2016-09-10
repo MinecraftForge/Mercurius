@@ -53,13 +53,19 @@ public class Sender
 
         if (cmd == Commands.START)
         {
+            // Take the modpack branding info from fmlbranding.properties via Binding. If it's Vanilla see if the config file overwrites it. fmlbranding.properties has priority!
+            String modPack = Mercurius.getBinding().getModPack();
+            if (modPack == "Vanilla") {
+                modPack = Config.modPack;
+            }
+
             StatsStartModel start = (StatsStartModel)model;
             start.ClientDateTimeEpoch = System.currentTimeMillis() / 1000L;
             start.JavaVersion         = System.getProperty("java.version");
             start.JavaAllocatedRAM    = Runtime.getRuntime().totalMemory();
             start.JavaMaxRAM          = Runtime.getRuntime().maxMemory();
             start.MinecraftVersion    = Mercurius.getBinding().getMCVersion();
-            start.modPack             = Mercurius.getBinding().getModPack();;
+            start.modPack             = modPack;
             start.Environment         = Mercurius.getBinding().getGameEnvironment();
             this.addAllModData(start);
         }

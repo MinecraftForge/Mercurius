@@ -9,6 +9,7 @@ import net.minecraftforge.mercurius.helpers.DataHelper;
 public class Config
 {
     public static boolean spammyLogs = false;
+    public static String modPack = "Vanilla";
     public static OptOuts OptOut = new OptOuts();
 
     public static class OptOuts
