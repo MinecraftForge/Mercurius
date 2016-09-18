@@ -10,6 +10,7 @@ public class StatsPingModel
     public Commands cmd;
     public String InstallID;
     public String SessionID;
+    public String ClientSessionID;
     public GameEnvironment Environment;
     public Map<String, Map<String, Object>> Mods;
 }
