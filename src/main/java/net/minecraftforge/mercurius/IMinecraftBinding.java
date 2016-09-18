@@ -12,6 +12,7 @@ public interface IMinecraftBinding
     String getMCVersion();
     String getModPack();
     String getSessionID();
+    void resetSessionID();
     Map<String, Map<String, Object>> gatherModData(Commands cmd);
     Map<String, ModInfo> gatherMods();
     void loadConfig();

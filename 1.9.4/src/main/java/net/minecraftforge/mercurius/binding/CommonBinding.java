@@ -27,7 +27,9 @@ abstract class CommonBinding implements IMinecraftBinding
     protected File cfgDir;
     Configuration global = null;
     Configuration local = null;
-    String sessionID = DataHelper.CreateID();
+
+    protected String sessionIDClient = DataHelper.CreateID();
+    protected String sessionIDServer = DataHelper.CreateID();
 
     protected CommonBinding(File cfgDir)
     {
@@ -46,11 +48,6 @@ abstract class CommonBinding implements IMinecraftBinding
     {
         String branding = Loader.instance().getFMLBrandingProperties().get("fmlbranding");
         return branding == null ? "Vanilla" : branding;
-    }
-
-    @Override
-    public String getSessionID() {
-        return sessionID;
     }
 
     @Override

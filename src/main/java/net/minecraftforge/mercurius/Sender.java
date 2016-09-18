@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 
 import net.minecraftforge.mercurius.dataModels.StatsPingModel;
 import net.minecraftforge.mercurius.dataModels.StatsStartModel;
+import net.minecraftforge.mercurius.helpers.DataHelper;
 import net.minecraftforge.mercurius.helpers.StatsConstants;
 import net.minecraftforge.mercurius.utils.Commands;
 import net.minecraftforge.mercurius.utils.GameEnvironment;
@@ -24,6 +25,7 @@ import java.util.Map.Entry;
 public class Sender
 {
     public StatsPingModel data;
+    String sessionIDApp = DataHelper.CreateID();
 
     public boolean isSnooperDisabled()
     {
@@ -36,7 +38,11 @@ public class Sender
         return json.toJson(model);
     }
 
-    public void collectData(Commands cmd, boolean upload) throws Exception
+    public void collectData(Commands cmd, boolean upload) throws Exception {
+        collectData(cmd, upload, Mercurius.getBinding().getGameEnvironment());
+    }
+
+    public void collectData(Commands cmd, boolean upload, GameEnvironment environment) throws Exception
     {
         if (this.isSnooperDisabled())
         {
@@ -47,9 +53,15 @@ public class Sender
         LogHelper.info("Starting collecting data for event "+cmd.toString());
 
         StatsPingModel model = cmd.newInstance();
-        model.InstallID = GlobalConfig.installID;
-        model.SessionID = Mercurius.getBinding().getSessionID();
-        model.Mods = Mercurius.getBinding().gatherModData(cmd);
+        model.InstallID           = GlobalConfig.installID;
+        model.SessionID           = Mercurius.getBinding().getSessionID();
+        model.Mods                = Mercurius.getBinding().gatherModData(cmd);
+        model.Environment         = Mercurius.getBinding().getGameEnvironment();
+
+        if (environment == GameEnvironment.CLIENT)
+        {
+            model.SessionID = sessionIDApp; // This is immutable by any layers, the other session ID's are dependent on connections/disconnections and reset accordingly.
+        }
 
         if (cmd == Commands.START)
         {
@@ -66,7 +78,6 @@ public class Sender
             start.JavaMaxRAM          = Runtime.getRuntime().maxMemory();
             start.MinecraftVersion    = Mercurius.getBinding().getMCVersion();
             start.modPack             = modPack;
-            start.Environment         = Mercurius.getBinding().getGameEnvironment();
             this.addAllModData(start);
         }
 

@@ -5,6 +5,7 @@ import java.io.File;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.mercurius.utils.GameEnvironment;
+import net.minecraftforge.mercurius.helpers.DataHelper;
 
 public class ServerBinding extends CommonBinding
 {
@@ -12,6 +13,12 @@ public class ServerBinding extends CommonBinding
     {
         super(cfgDir);
     }
+
+    @Override
+    public String getSessionID() { return sessionIDServer; }
+
+    @Override
+    public void resetSessionID() { sessionIDServer = DataHelper.CreateID(); }
 
     @Override
     public boolean isSnooperDisabled()

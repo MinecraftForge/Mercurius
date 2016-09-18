@@ -1,5 +1,8 @@
 package net.minecraftforge.mercurius;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import cpw.mods.fml.client.IModGuiFactory;
@@ -7,10 +10,14 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.mercurius.binding.ClientBinding;
 import net.minecraftforge.mercurius.binding.ModConfigGui;
 import net.minecraftforge.mercurius.binding.ServerBinding;
+import net.minecraftforge.mercurius.helpers.DataHelper;
 import net.minecraftforge.mercurius.utils.Commands;
+import net.minecraftforge.mercurius.utils.GameEnvironment;
+import net.minecraftforge.mercurius.utils.LogHelper;
 
 import java.util.Set;
 
@@ -34,6 +41,12 @@ public class StatsMod
         else
             binding = new ServerBinding(e.getModConfigurationDirectory());
         Mercurius.bootstrap(binding);
+    }
+
+    @EventHandler
+    public void init(FMLInitializationEvent e)
+    {
+        FMLCommonHandler.instance().bus().register(new ConnectionEvents());
     }
 
     @EventHandler
@@ -72,6 +85,7 @@ public class StatsMod
         {
             Mercurius.getSender().collectData(Commands.STOP, true);
             Mercurius.getSender().cancelTimer();
+            Mercurius.getBinding().resetSessionID();
         }
         catch (Exception e1)
         {
@@ -85,5 +99,41 @@ public class StatsMod
         @Override public void initialize(Minecraft minecraftInstance) {}
         @Override public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() { return null; }
         @Override public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) { return null; }
+    }
+
+    public class ConnectionEvents
+    {
+        @SubscribeEvent
+        public void onConnectionOpened(FMLNetworkEvent.ClientConnectedToServerEvent e)
+        {
+            try
+            {
+                if(!e.isLocal) // only fire on actual MP servers not on local.
+                {
+                    Mercurius.getSender().collectData(Commands.START, true, GameEnvironment.SERVER_NON_LOCAL);
+                }
+            }
+            catch (Exception e1)
+            {
+                e1.printStackTrace();
+            }
+        }
+
+        @SubscribeEvent
+        public void disconnectedFromServer(FMLNetworkEvent.ClientDisconnectionFromServerEvent e)
+        {
+            try
+            {
+                if(!e.manager.isLocalChannel()) // only fire on actual MP servers not on local.
+                {
+                    Mercurius.getSender().collectData(Commands.STOP, true, GameEnvironment.SERVER_NON_LOCAL);
+                    Mercurius.getBinding().resetSessionID();
+                }
+            }
+            catch (Exception e1)
+            {
+                e1.printStackTrace();
+            }
+        }
     }
 }
