@@ -38,7 +38,8 @@ public class Sender
         return json.toJson(model);
     }
 
-    public void collectData(Commands cmd, boolean upload) throws Exception {
+    public void collectData(Commands cmd, boolean upload) throws Exception
+    {
         collectData(cmd, upload, Mercurius.getBinding().getGameEnvironment());
     }
 
@@ -57,7 +58,7 @@ public class Sender
         model.SessionID           = Mercurius.getBinding().getSessionID();
         model.ClientSessionID    = sessionIDApp;
         model.Mods                = Mercurius.getBinding().gatherModData(cmd);
-        model.Environment         = Mercurius.getBinding().getGameEnvironment();
+        model.Environment         = environment;
 
         if (environment == GameEnvironment.CLIENT)
         {
