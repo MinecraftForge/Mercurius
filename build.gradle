@@ -10,7 +10,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-version = "1.0.0"
+version = "1.0.1"
 allprojects {
     group = "net.minecraftforge"
     archivesBaseName = "Mercurius"
@@ -34,7 +34,7 @@ task setupCiWorkspace
 
 // configure subprojects
 subprojects {
-    version = minecraft.version // + "-" + rootProject.version //Do we want to apply the version to the file name? 
+    version = minecraft.version  + "-" + rootProject.version //Do we want to apply the version to the file name? 
                                 //Doing it this way allows us to simply reference a single version per mc version 
                                 //in the mc version json and the launcher will auto update it.
     
