@@ -38,6 +38,12 @@ subprojects {
                                 //Doing it this way allows us to simply reference a single version per mc version 
                                 //in the mc version json and the launcher will auto update it.
     
+    
+    if (project.hasProperty('forgeMavenPass')) { //If we are uploading this to maven we should push it out as JUST the MC version so that
+                                                 // the launcher can auto-download it.
+        version = minecraft.version
+    }
+    
     dependencies {
         compile rootProject
     }
