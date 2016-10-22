@@ -39,7 +39,7 @@ subprojects {
                                 //in the mc version json and the launcher will auto update it.
     
     
-    if (project.hasProperty('forgeMavenPass')) { //If we are uploading this to maven we should push it out as JUST the MC version so that
+    if (rootProject.hasProperty('forgeMavenPass')) { //If we are uploading this to maven we should push it out as JUST the MC version so that
                                                  // the launcher can auto-download it.
         version = minecraft.version
     }
@@ -83,10 +83,10 @@ subprojects {
 
             dependsOn 'build'
 
-            if (project.hasProperty('forgeMavenPass'))
+            if (rootProject.hasProperty('forgeMavenPass'))
             {
                 repository(url: "http://files.minecraftforge.net/maven/manage/upload") {
-                    authentication(userName: "forge", password: project.getProperty('forgeMavenPass'))
+                    authentication(userName: "forge", password: rootProject.getProperty('forgeMavenPass'))
                 }
             }
             else
