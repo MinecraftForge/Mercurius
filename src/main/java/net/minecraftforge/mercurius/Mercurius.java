@@ -1,5 +1,7 @@
 package net.minecraftforge.mercurius;
 
+import net.minecraftforge.mercurius.utils.LauncherCachingHack;
+
 public class Mercurius
 {
     private static IMinecraftBinding binding = null;
@@ -18,6 +20,8 @@ public class Mercurius
         }
 
         binding.loadConfig();
+
+        LauncherCachingHack.cullChecksum();
     }
 
     public static IMinecraftBinding getBinding()

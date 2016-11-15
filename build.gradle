@@ -40,7 +40,7 @@ subprojects {
     
     
     if (rootProject.hasProperty('forgeMavenPass')) { //If we are uploading this to maven we should push it out as JUST the MC version so that
-                                                 // the launcher can auto-download it.
+                                                     // the launcher can auto-download it.
         version = minecraft.version
     }
     
