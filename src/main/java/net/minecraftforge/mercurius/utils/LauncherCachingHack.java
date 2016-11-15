@@ -28,12 +28,12 @@ public class LauncherCachingHack
 
 	private static File getJar() throws Exception
 	{
-	    URL url = Beta.class.getProtectionDomain().getCodeSource().getLocation();
+	    URL url = LauncherCachingHack.class.getProtectionDomain().getCodeSource().getLocation();
 	    String extURL = url.toExternalForm();
 
 	    if (!extURL.endsWith(".jar"))
 	    {
-	        String suffix = "/" + (Beta.class.getName()).replace(".", "/") + ".class";
+	        String suffix = "/" + (LauncherCachingHack.class.getName()).replace(".", "/") + ".class";
 	        extURL = extURL.replace(suffix, "");
 	        if (extURL.startsWith("jar:") && extURL.endsWith(".jar!"))
 	            extURL = extURL.substring(4, extURL.length() - 1);
