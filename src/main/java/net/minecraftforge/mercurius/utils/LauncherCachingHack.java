@@ -4,8 +4,6 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import com.google.common.annotations.Beta;
-
 public class LauncherCachingHack
 {
 	private static final int MAX_AGE = 24 * 60 * 60 * 1000; // 24 Hours

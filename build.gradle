@@ -53,6 +53,25 @@ subprojects {
         duplicatesStrategy = 'exclude'
         from rootProject.sourceSets.main.output
     }
+    
+    task signJar(dependsOn: 'jar') {
+        onlyIf {
+            rootProject.hasProperty('jarsigner')
+        }
+
+        def jarsigner = [:];
+
+        if (rootProject.hasProperty('jarsigner'))
+            jarsigner = rootProject.jarsigner;
+    } << {
+        ant.signjar(jar: jar.archivePath,
+                alias: 'forge',
+                keystore: jarsigner.keystore,
+                storepass: jarsigner.storepass,
+                keypass: jarsigner.keypass)
+    }
+    uploadArchives.dependsOn signJar
+    build.dependsOn signJar
 
     sourceJar {
         duplicatesStrategy = 'exclude'
