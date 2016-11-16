@@ -92,7 +92,7 @@ subprojects {
         }
     } << {
         def bn = System.getenv("BUILD_NUMBER") ?: rootProject.ext.properties.buildNumber ?: 0;
-        new File(buildtxt).text = project.version + '.' + bn
+        new File(buildtxt).text =  minecraft.version  + '-' + rootProject.version + '.' + bn
     }
     uploadArchives.dependsOn writeBuildNumber
     
