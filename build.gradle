@@ -11,6 +11,14 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 
 version = "1.0.1"
+if (project.hasProperty('addBuildVersion'))
+{
+    def bn = System.getenv("BUILD_NUMBER") ?: project.ext.properties.buildNumber ?: 0;
+    if (bn == 0)
+        throw new RuntimeException("Attempted to add build but used no build number!")
+    version = version + "." + bn
+}
+
 allprojects {
     group = "net.minecraftforge"
     archivesBaseName = "Mercurius"
@@ -34,10 +42,7 @@ task setupCiWorkspace
 
 // configure subprojects
 subprojects {
-    version = minecraft.version  + "-" + rootProject.version //Do we want to apply the version to the file name? 
-                                //Doing it this way allows us to simply reference a single version per mc version 
-                                //in the mc version json and the launcher will auto update it.
-    
+    version = minecraft.version  + "-" + rootProject.version    
     
     if (rootProject.hasProperty('forgeMavenPass')) { //If we are uploading this to maven we should push it out as JUST the MC version so that
                                                      // the launcher can auto-download it.
