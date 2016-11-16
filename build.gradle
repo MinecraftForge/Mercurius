@@ -84,8 +84,22 @@ subprojects {
         from rootProject.sourceSets.main.allSource
     }
     
+    def buildtxt = project.buildDir.absolutePath + '/libs/Mercurius-' + project.version + '-build_num.txt'
+    
+    task writeBuildNumber() {
+        onlyIf {
+            !project.hasProperty('addBuildVersion')
+        }
+    } << {
+        def bn = System.getenv("BUILD_NUMBER") ?: rootProject.ext.properties.buildNumber ?: 0;
+        new File(buildtxt).text = project.version + '.' + bn
+    }
+    uploadArchives.dependsOn writeBuildNumber
+    
     artifacts {
         archives sourceJar
+        if (!project.hasProperty('addBuildVersion'))
+            archives file(buildtxt)
     }
     
     processResources
