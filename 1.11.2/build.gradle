@@ -1,0 +1,37 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+version = '1.11.2'
+
+minecraft {
+    version = "1.11.2-13.20.0.2200"
+    runDir = "run"
+    mappings = "snapshot_20161115"
+}
+
+dependencies {
+    compile project(':1.11')
+}
+
+jar.dependsOn ':1.11:jar'
+sourceJar.dependsOn ':1.11:sourceJar'
+
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(tasks.jar)) {
+        tasks.jar {
+            from zipTree(project(':1.11').tasks['jar'].archivePath)
+        }
+    }
+    if (graph.hasTask(tasks.sourceJar)) {
+        tasks.sourceJar {
+            from zipTree(project(':1.11').tasks['sourceJar'].archivePath)
+        }
+    }
+}
