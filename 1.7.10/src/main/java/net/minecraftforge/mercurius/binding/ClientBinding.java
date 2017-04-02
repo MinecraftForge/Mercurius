@@ -25,7 +25,11 @@ public class ClientBinding extends CommonBinding
     }
 
     @Override
-    public void resetSessionID() { sessionIDServer = DataHelper.CreateID(); }
+    public void resetSessionID() 
+    {         
+        sessionIDClient = DataHelper.CreateID();
+        sessionIDServer = DataHelper.CreateID();
+    }
 
     @Override
     public boolean isSnooperDisabled()

@@ -27,8 +27,8 @@ public class ClientBinding extends CommonBinding
     @Override
     public void resetSessionID()
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
-            sessionIDServer = DataHelper.CreateID();
+        sessionIDClient = DataHelper.CreateID();
+        sessionIDServer = DataHelper.CreateID();
     }
 
     @Override
