@@ -8,4 +8,5 @@ public class StatsStartModel extends StatsPingModel
     public long JavaMaxRAM;
     public String MinecraftVersion;
     public String modPack;
+    public String modPackVersion;
 }

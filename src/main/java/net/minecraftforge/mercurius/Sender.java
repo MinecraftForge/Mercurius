@@ -56,7 +56,7 @@ public class Sender
         StatsPingModel model = cmd.newInstance();
         model.InstallID           = GlobalConfig.installID;
         model.SessionID           = Mercurius.getBinding().getSessionID();
-        model.ClientSessionID    = sessionIDApp;
+        model.ClientSessionID     = sessionIDApp;
         model.Mods                = Mercurius.getBinding().gatherModData(cmd);
         model.Environment         = environment;
 
@@ -80,6 +80,7 @@ public class Sender
             start.JavaMaxRAM          = Runtime.getRuntime().maxMemory();
             start.MinecraftVersion    = Mercurius.getBinding().getMCVersion();
             start.modPack             = modPack;
+            start.modPackVersion      = Config.modPackVersion;
             this.addAllModData(start);
         }
 

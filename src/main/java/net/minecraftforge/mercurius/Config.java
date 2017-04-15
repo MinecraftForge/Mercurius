@@ -10,6 +10,7 @@ public class Config
 {
     public static boolean spammyLogs = false;
     public static String modPack = "Vanilla";
+    public static String modPackVersion = "1.0";
     public static OptOuts OptOut = new OptOuts();
 
     public static class OptOuts
