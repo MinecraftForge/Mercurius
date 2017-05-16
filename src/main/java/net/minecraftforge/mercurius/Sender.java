@@ -22,6 +22,7 @@ import java.net.URLEncoder;
 import java.util.*;
 import java.util.Map.Entry;
 
+// Sender class that does the logic to send data to Mercurius servers. Ugly and needs refactoring most likely.
 public class Sender
 {
     public StatsPingModel data;
@@ -45,26 +46,31 @@ public class Sender
 
     public void collectData(Commands cmd, boolean upload, GameEnvironment environment) throws Exception
     {
+        // Is snooper disabled?
         if (this.isSnooperDisabled())
         {
+            // ABORT Mission!!!
             LogHelper.info("Snooper is disabled... aborting collection.");
             return;
         }
 
         LogHelper.info("Starting collecting data for event "+cmd.toString());
 
+        // Build the model and populate with the data received from the mod.
         StatsPingModel model = cmd.newInstance();
-        model.InstallID           = GlobalConfig.installID;
-        model.SessionID           = Mercurius.getBinding().getSessionID();
-        model.ClientSessionID     = sessionIDApp;
-        model.Mods                = Mercurius.getBinding().gatherModData(cmd);
-        model.Environment         = environment;
+        model.InstallID           = GlobalConfig.installID; // Grab the install ID.
+        model.SessionID           = Mercurius.getBinding().getSessionID(); // Grab the session ID from the Mod.
+        model.ClientSessionID     = sessionIDApp; // Grab the client session ID from ourselves since we control that.
+        model.Mods                = Mercurius.getBinding().gatherModData(cmd); // Grab all the mod related data.
+        model.Environment         = environment; // And what environment are we in.
 
+        // TODO: I still need to debug why I have this here...
         if (environment == GameEnvironment.CLIENT)
         {
             model.SessionID = sessionIDApp; // This is immutable by any layers, the other session ID's are dependent on connections/disconnections and reset accordingly.
         }
 
+        // If we're doing a START event, we need additional information.
         if (cmd == Commands.START)
         {
             // Take the modpack branding info from fmlbranding.properties via Binding. If it's Vanilla see if the config file overwrites it. fmlbranding.properties has priority!
@@ -73,18 +79,22 @@ public class Sender
                 modPack = Config.modPack;
             }
 
+            // Expand the model
             StatsStartModel start = (StatsStartModel)model;
-            start.ClientDateTimeEpoch = System.currentTimeMillis() / 1000L;
-            start.JavaVersion         = System.getProperty("java.version");
-            start.JavaAllocatedRAM    = Runtime.getRuntime().totalMemory();
+            start.ClientDateTimeEpoch = System.currentTimeMillis() / 1000L; // Get the current time.
+            start.JavaVersion         = System.getProperty("java.version"); // The java version.
+            start.JavaAllocatedRAM    = Runtime.getRuntime().totalMemory(); // Memory info
             start.JavaMaxRAM          = Runtime.getRuntime().maxMemory();
-            start.MinecraftVersion    = Mercurius.getBinding().getMCVersion();
-            start.modPack             = modPack;
-            start.modPackVersion      = Config.modPackVersion;
-            this.addAllModData(start);
+            start.MinecraftVersion    = Mercurius.getBinding().getMCVersion(); // Minecraft version
+            start.modPack             = modPack; // Mod pack
+            start.modPackVersion      = Config.modPackVersion; // and mod pack version.
+            this.addAllModData(start); // Add in the mod data.
         }
 
+        // Remove anything the user has opted out of.
         this.data = optOutDataFromModel(model);
+
+        // And upload?
         if (upload)
             this.Upload();
     }
@@ -97,6 +107,7 @@ public class Sender
 
     public void Upload(final String json) throws Exception
     {
+        // Upload via a new thread because we don't want to lock up the main one.
         Thread newThread = new Thread()
         {
             public void run()
@@ -110,6 +121,7 @@ public class Sender
 
     }
 
+    // And actually do the HTTP Post with the values
     private static String post(String json)
     {
         try
@@ -152,6 +164,7 @@ public class Sender
 
     private static Timer timer = new Timer();
 
+    // Start the timer that will send the PING events.
     public void startTimer()
     {
         LogHelper.info("Starting timer...");
@@ -180,6 +193,7 @@ public class Sender
             timer.cancel();
     }
 
+    // Let's remove all the data the user doesn't want to upload to Mercurius
     private StatsPingModel optOutDataFromModel(StatsPingModel model)
     {
         if (Config.OptOut.installID)
@@ -214,6 +228,7 @@ public class Sender
                 start.modPack = "";
         }
 
+        // We iterate through all the mods and if any of them has been opt-ed out, we remove the data.
         Iterator<String> itr = model.Mods.keySet().iterator();
         while (itr.hasNext())
         {
@@ -226,6 +241,7 @@ public class Sender
         return model;
     }
 
+    // Pull all the mod data from the Mod.
     private void addAllModData(StatsStartModel model)
     {
         for (Entry<String, ModInfo> e : Mercurius.getBinding().gatherMods().entrySet())
@@ -239,8 +255,8 @@ public class Sender
                 model.Mods.put(modId, modData);
             }
 
-            modData.put("Version", info.version);
-            modData.put("Enabled", info.enabled);
+            modData.put("Version", info.version); // Version of the mod.
+            modData.put("Enabled", info.enabled); // Is the mod enabled.
         }
     }
 }

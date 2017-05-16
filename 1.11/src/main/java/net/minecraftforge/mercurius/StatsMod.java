@@ -33,6 +33,7 @@ public class StatsMod
     @EventHandler
     public void preInit(FMLPreInitializationEvent e)
     {
+        // Init the binding
         if (e.getSide() == Side.CLIENT)
             binding = new ClientBinding(e.getModConfigurationDirectory());
         else
@@ -51,13 +52,13 @@ public class StatsMod
     {
         try
         {
-            Mercurius.getSender().collectData(Commands.START, true);
-            Mercurius.getSender().startTimer(); //Do we want to tick when people are sitting in menu?
-            //We also need to figure out how to deal with ticking the client in MP? Because the cancel in server stop would derp it up.
+          // TODO: Do we want to tick when people are sitting in menu?
+          // TODO: We also need to figure out how to deal with ticking the client in MP? Because the cancel in server stop would derp it up.
+            Mercurius.getSender().collectData(Commands.START, true); // We started so let's say START to Mercurius and upload it.
+            Mercurius.getSender().startTimer();
         }
         catch (Exception e1)
         {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
     }
@@ -67,7 +68,7 @@ public class StatsMod
     {
         try
         {
-            Mercurius.getSender().collectData(Commands.START, true);
+            Mercurius.getSender().collectData(Commands.START, true); // Server has started, let's send START to Mercurius.
         }
         catch (Exception e1)
         {
@@ -80,9 +81,9 @@ public class StatsMod
     {
         try
         {
-            Mercurius.getSender().collectData(Commands.STOP, true);
-            Mercurius.getSender().cancelTimer();
-            Mercurius.getBinding().resetSessionID();
+            Mercurius.getSender().collectData(Commands.STOP, true); // Send STOP for server.
+            Mercurius.getSender().cancelTimer(); // Cancel the PING timer.
+            Mercurius.getBinding().resetSessionID(); // And reset the ID for the server. This is needed so we can differentiate between start/stop of world without restarting the game itself.
         }
         catch (Exception e1)
         {
@@ -107,6 +108,7 @@ public class StatsMod
             {
                 if(!e.isLocal()) // only fire on actual MP servers not on local.
                 {
+                    // Let's trigger a START on the remote server when someone joins the server.
                     Mercurius.getSender().collectData(Commands.START, true, GameEnvironment.SERVER_NON_LOCAL);
                 }
             }
@@ -123,8 +125,9 @@ public class StatsMod
             {
                 if(!e.getManager().isLocalChannel()) // only fire on actual MP servers not on local.
                 {
+                    // Let's trigger a STOP on the remote server when someones leaves the server.
                     Mercurius.getSender().collectData(Commands.STOP, true, GameEnvironment.SERVER_NON_LOCAL);
-                    Mercurius.getBinding().resetSessionID();
+                    Mercurius.getBinding().resetSessionID(); // Don't forget to reset ID's.
                 }
             }
             catch (Exception e1)

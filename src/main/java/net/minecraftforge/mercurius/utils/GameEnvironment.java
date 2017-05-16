@@ -6,5 +6,5 @@ public enum GameEnvironment
     SERVER_NON_LOCAL, // playing on an MP server
     SERVER_DEDICATED, // the dedicated server app.
     CLIENT,    // The Minecraft app itself.
-    OPTED_OUT;
+    OPTED_OUT; // Not in use currently.
 }

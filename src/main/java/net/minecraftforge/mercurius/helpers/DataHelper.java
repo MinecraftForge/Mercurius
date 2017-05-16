@@ -6,6 +6,7 @@ import java.util.UUID;
 
 public class DataHelper
 {
+    // Function that's used to create the random ID's.
     public static String CreateID()
     {
         String id = "";
@@ -21,6 +22,7 @@ public class DataHelper
         return id;
     }
 
+    // Anonymization function that ensure's we can't track users. Data is hashed with SHA-256 HASHCOUNT times.
     public static String Anonymize(String data) throws NoSuchAlgorithmException
     {
         MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
