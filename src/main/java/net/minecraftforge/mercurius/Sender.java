@@ -226,6 +226,12 @@ public class Sender
 
             if (Config.OptOut.modPack)
                 start.modPack = "";
+
+            if (Config.OptOut.modPackVersion)
+                start.modPackVersion = "";
+
+            if (Config.OptOut.OS)
+                start.OS = "";
         }
 
         // We iterate through all the mods and if any of them has been opt-ed out, we remove the data.

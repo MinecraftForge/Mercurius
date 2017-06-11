@@ -96,6 +96,8 @@ public class StatsMod
         @Override public void initialize(Minecraft minecraftInstance) {}
         @Override public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() { return null; }
         @Override public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) { return null; }
+        @Override public GuiScreen createConfigGui(GuiScreen parentScreen) { return new ModConfigGui(parentScreen); }
+        @Override public boolean hasConfigGui() { return true; }
     }
 
     public class ConnectionEvents
@@ -105,7 +107,7 @@ public class StatsMod
         {
             try
             {
-                if(!e.isLocal) // only fire on actual MP servers not on local.
+                if(!e.isLocal()) // only fire on actual MP servers not on local.
                 {
                     Mercurius.getSender().collectData(Commands.START, true, GameEnvironment.SERVER_NON_LOCAL);
                 }
@@ -121,7 +123,7 @@ public class StatsMod
         {
             try
             {
-                if(!e.manager.isLocalChannel()) // only fire on actual MP servers not on local.
+                if(!e.getManager().isLocalChannel()) // only fire on actual MP servers not on local.
                 {
                     Mercurius.getSender().collectData(Commands.STOP, true, GameEnvironment.SERVER_NON_LOCAL);
                     Mercurius.getBinding().resetSessionID();

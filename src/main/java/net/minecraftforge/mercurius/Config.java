@@ -26,6 +26,8 @@ public class Config
         public boolean javaVersion = false;
         public boolean minecraftVersion = false;
         public boolean modPack = false;
+        public boolean modPackVersion = false;
+        public boolean OS = false;
         public Map<String, Boolean> mods = Maps.newHashMap();
     }
 }

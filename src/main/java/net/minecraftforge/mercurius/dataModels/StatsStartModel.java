@@ -10,4 +10,5 @@ public class StatsStartModel extends StatsPingModel
     public String MinecraftVersion; // Version of Minecraft
     public String modPack; // What's the current mod pack (if applicable), value loaded from config.
     public String modPackVersion; // What's the current mod pack versoin, value loaded from config.
+    public String OS; // Operating system.
 }
