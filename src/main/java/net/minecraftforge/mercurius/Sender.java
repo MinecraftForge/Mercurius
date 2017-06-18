@@ -152,12 +152,14 @@ public class Sender
             in_.close();
             return ret.toString();
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            if (Config.spammyLogs) // Let's spam the logs a bit less with errors.
+                e.printStackTrace();
+                
             return e.toString();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            if (Config.spammyLogs) // Let's spam the logs a bit less with errors.
+                e.printStackTrace();
+
             return e.toString();
         }
     }
